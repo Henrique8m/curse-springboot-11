@@ -1,0 +1,5 @@
+package com.rodrigues.couse.entities;
+
+public class Product {
+
+}
