@@ -1,0 +1,5 @@
+package com.rodrigues.couse.repositories;
+
+public Interface OrderItemRepository {
+
+}
