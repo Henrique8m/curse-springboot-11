@@ -3,12 +3,14 @@ package com.rodrigues.couse.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.aspectj.apache.bcel.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.rodrigues.couse.entities.User;
 import com.rodrigues.couse.repositories.UserRepository;
+import com.rodrigues.couse.services.exception.DatabaseException;
 import com.rodrigues.couse.services.exception.ResourceNotFoundException;
 
 @Service
@@ -38,9 +40,20 @@ public class UserService {
 	}
 	
 	public void delete(Long id) {
+		try {
+			
+			userRepository.deleteById(id);
 		
-		userRepository.deleteById(id);
-		
+		}catch (EmptyResultDataAccessException e) {
+
+			throw new ResourceNotFoundException(id);
+			
+		}catch (DataIntegrityViolationException e) {
+			
+			throw new DatabaseException(e.getMessage());
+			
+		}
+			
 	}
 	
 	public User update(Long id, User obj) {
